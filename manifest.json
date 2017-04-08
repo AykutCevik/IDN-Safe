@@ -30,5 +30,6 @@
     "default_title": "IDN Safe",
     "default_icon": "img/icon_48.png",
     "default_popup": "html/popup.html"
-  }
+  },
+  "author": "Aykut Çevik"
 }
