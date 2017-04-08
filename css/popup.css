@@ -1,0 +1,12 @@
+.idn-card-square > .mdl-card__title {
+    color: #fff;
+    background: url('../img/icon_128.png') bottom 30% right 10% no-repeat #353f40;
+}
+
+.mdl-chip__contact {
+    font-size: 12px;
+}
+
+.mdl-chip {
+    margin-top: 20px;
+}

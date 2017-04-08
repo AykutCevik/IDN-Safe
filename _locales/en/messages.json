@@ -1,0 +1,26 @@
+{
+  "extensionName": {
+    "message": "IDN Safe",
+    "description": "Name of extension, of course IDN Safe ;)"
+  },
+  "extensionDescription": {
+    "message": "IDN Safe is a browser extension which blocks internationalized domain names to prevent you from visiting probable fake sites.",
+    "description": "Description of the extension to give the user an insight into this extension."
+  },
+  "textPopupDescription": {
+    "message": "Below is a list of blocked domains. You can allow them by clicking the checkboxes and pressing the corresponding button.",
+    "description": "First sentence shown in popup."
+  },
+  "buttonAllowTemp": {
+    "message": "Temporarily",
+    "description": "Button which will allow blocked domains temporarily."
+  },
+  "buttonAllowAlways": {
+    "message": "Whitelist",
+    "description": "Button which will allow blocked domains always - whitelist."
+  },
+  "textNoBlockedDomains": {
+    "message": "No domains blocked.",
+    "description": "If no request has been blocked this message should be shown in popup."
+  }
+}
