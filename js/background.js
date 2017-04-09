@@ -17,6 +17,13 @@ chrome.extension.onRequest.addListener(function (request, sender, sendResponse) 
             });
             sendResponse(null);
             break;
+        case REQ_REMOVE_FROM_WHITELIST:
+            deWhitelistDomains(request.list, sendResponse);
+            break;
+        case REQ_REVOKE_FROM_TEMP_LIST:
+            revokeTemporarilyAllowed();
+            sendResponse(null);
+            break;
     }
 });
 
@@ -58,6 +65,32 @@ chrome.webRequest.onBeforeRequest.addListener(function (data) {
     ["blocking"]
 );
 
+function revokeTemporarilyAllowed() {
+    allowedDomains.length = 0;
+    loadWhitelist();
+}
+
+function deWhitelistDomains(domains, successHandler) {
+    chrome.storage.local.get('whiteListedDomains', function (object) {
+
+        const whitelistedDomains = [];
+
+        if (object.whiteListedDomains) {
+            object.whiteListedDomains.forEach(function (domain) {
+                if (domains.indexOf(domain) === -1) {
+                    whitelistedDomains.push(domain);
+                }
+
+                var index = allowedDomains.indexOf(domain);
+                if (index !== -1) {
+                    allowedDomains.splice(index);
+                }
+            });
+        }
+        chrome.storage.local.set({whiteListedDomains: whitelistedDomains}, successHandler);
+    });
+}
+
 function whitelistDomains(domains) {
     chrome.storage.local.get('whiteListedDomains', function (object) {
 
@@ -74,8 +107,6 @@ function whitelistDomains(domains) {
 
         chrome.storage.local.set({whiteListedDomains: whitelistedDomains});
     });
-
-
 }
 
 function updateTabIcon(tabId) {
@@ -101,7 +132,7 @@ function extractDomainFromURL(url) { // credit: NotScript
     return url;
 }
 
-function init() {
+function loadWhitelist() {
     chrome.storage.local.get('whiteListedDomains', function (object) {
         if (object.whiteListedDomains.length > 0) {
             object.whiteListedDomains.forEach(function (domain) {
@@ -111,4 +142,4 @@ function init() {
     });
 }
 
-init();
+loadWhitelist();

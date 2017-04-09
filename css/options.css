@@ -1,0 +1,18 @@
+.mdl-card__title {
+    color: #fff;
+    background: url('../img/icon_128.png') bottom 30% right 10% no-repeat #353f40;
+}
+
+.whitelist-card {
+    width: 700px;
+    margin: 20px auto;
+}
+
+.mdl-layout__header, .mdl-mega-footer{
+ background: #353f40;
+}
+
+.options-no-whitelist {
+    margin-top: 60px;
+    font-weight: bolder;
+}

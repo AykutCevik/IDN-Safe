@@ -2,9 +2,75 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>IDN Safe</title>
+    <script type="text/javascript" src="../js/constants.js"></script>
+    <script type="text/javascript" src="../js/options.js"></script>
+    <script type="text/javascript" src="../js/punycode.js"></script>
+    <link rel="stylesheet" href="../css/material.min.css">
+    <script src="../js/material.min.js"></script>
+    <link rel="stylesheet" href="../css/material_fonts.css">
+    <link rel="stylesheet" href="../css/options.css">
 </head>
 <body>
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
+    <header class="mdl-layout__header">
+        <div class="mdl-layout__header-row">
+        </div>
+    </header>
+    <div class="mdl-layout__drawer">
+        <span class="mdl-layout-title" id="textSettingsTitle">IDN Safe</span>
+        <nav class="mdl-navigation">
+            <a class="mdl-navigation__link" href="https://aykutcevik.com/#page-contact" target="_blank"><i class="material-icons">mail</i> Contact</a>
+            <a class="mdl-navigation__link" href="https://github.com/AykutCevik/IDN-Safe" target="_blank"><i class="material-icons">code</i> GitHub</a>
+            <a class="mdl-navigation__link" href="https://twitter.com/aykut_cevik" target="_blank"><i class="material-icons">link</i> Twitter</a>
+        </nav>
+    </div>
+    <main class="mdl-layout__content">
+        <div class="page-content">
+
+            <div class="whitelist-card mdl-card mdl-shadow--2dp">
+                <div class="mdl-card__title mdl-card--expand">
+                    <h2 class="mdl-card__title-text" id="textTitleWhitelist">Whitelist</h2>
+                </div>
+                <div class="mdl-card__supporting-text">
+                    <span id="textWhitelistList"></span>
+
+                    <div id="no_whitelisted_domains" class="options-no-whitelist"></div>
+                    <ul class="mdl-list" id="whitelist_list"></ul>
+                </div>
+                <div class="mdl-card__actions mdl-card--border">
+                    <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" id="buttonRemoveFromWhitelist">Remove</a>
+                    <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" id="buttonRevokeAllTemp">Revoke all</a>
+                </div>
+            </div>
+            <div id="options-snackbar" class="mdl-js-snackbar mdl-snackbar">
+                <div class="mdl-snackbar__text"></div>
+                <button class="mdl-snackbar__action" type="button"></button>
+            </div>
+        </div>
+    </main>
+    <footer class="mdl-mini-footer">
+        <div class="mdl-mini-footer__right-section">
+            <div class="mdl-logo" id="textVersionInfo">IDN Safe v.</div>
+            <ul class="mdl-mini-footer__link-list">
+                <li><a href="http://idnsafe.com" target="_blank">Help</a></li>
+            </ul>
+        </div>
+    </footer>
+</div>
+
+<script type="text/html" id="template_list_item">
+    <li class="mdl-list__item">
+        <span class="mdl-list__item-primary-content">
+            <span class="mdl-list__item-primary-content"><label for="__LIST_ID__">__DOMAIN_TEXT__</label></span>
+         </span>
+        <span class="mdl-list__item-secondary-action">
+          <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="__LIST_ID__">
+            <input type="checkbox" name="domaincheckbox" id="__LIST_ID__" data-domain="__DOMAIN__" class="mdl-checkbox__input"/>
+          </label>
+        </span>
+    </li>
+</script>
 
 </body>
 </html>

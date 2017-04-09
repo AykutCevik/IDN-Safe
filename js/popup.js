@@ -25,16 +25,20 @@ function reloadCurrentTab() {
 
 function allowSelectedTemporarily() {
     var domains = getSelectedDomains();
-    chrome.extension.sendRequest({type: REQ_ALLOW_TEMPORARILY, list: domains}, function (response) {
-        reloadCurrentTab();
-    });
+    if (domains.length > 0) {
+        chrome.extension.sendRequest({type: REQ_ALLOW_TEMPORARILY, list: domains}, function (response) {
+            reloadCurrentTab();
+        });
+    }
 }
 
 function allowSelectedAlways() {
     var domains = getSelectedDomains();
-    chrome.extension.sendRequest({type: REQ_ALLOW_ALWAYS, list: domains}, function (response) {
-        reloadCurrentTab();
-    });
+    if (domains.length > 0) {
+        chrome.extension.sendRequest({type: REQ_ALLOW_ALWAYS, list: domains}, function (response) {
+            reloadCurrentTab();
+        });
+    }
 }
 
 function initUI() {
@@ -82,7 +86,7 @@ function getBlockUrls() {
 
 function hash(str) { // fast workaround
     var hash = 0;
-    if (str.length == 0) return hash;
+    if (str.length === 0) return hash;
     for (i = 0; i < str.length; i++) {
         char = str.charCodeAt(i);
         hash = ((hash << 5) - hash) + char;

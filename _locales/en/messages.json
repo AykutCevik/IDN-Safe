@@ -22,5 +22,37 @@
   "textNoBlockedDomains": {
     "message": "No domains blocked.",
     "description": "If no request has been blocked this message should be shown in popup."
+  },
+  "textSettingsTitle": {
+    "message": "Settings",
+    "description": "Title and heading for the settings page."
+  },
+  "textSettingsWhiteListTitle": {
+    "message": "Whitelist",
+    "description": "Title for the whitelist card on options page."
+  },
+  "textSettingsWhiteListDescription": {
+    "message": "Below is a list of your allowed domains. Check them and press the button to remove them.",
+    "description": "Description for the whitelist card on options page."
+  },
+  "buttonRemoveFromWhitelist": {
+    "message": "Remove from whitelist",
+    "description": "Button to remove whitelisted domains on options page."
+  },
+  "textRemovedFromWhitelist": {
+    "message": "Domains removed from whitelist.",
+    "description": "Snackbar info when domains has been removed from whitelist."
+  },
+  "textNoWhitelistedDomains": {
+    "message": "No whitelisted domains.",
+    "description": "Text shown in options page when no domain is whitelisted."
+  },
+  "buttonRevokeAllTemporary": {
+    "message": "Revoke all temporarily allowed",
+    "description": "Button text to revoke all temporarily allowed domains"
+  },
+  "textRevokedFromTemp": {
+    "message": "Revoked all temporarily allowed domains.",
+    "description": "Snackbar info when domains has been revoked from temporary list."
   }
 }
