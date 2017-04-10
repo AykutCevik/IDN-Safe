@@ -15,3 +15,6 @@ With IDN Safe you can temporarily allow domains or whitelist them at all. By def
 * [Internationalized domain name](https://en.wikipedia.org/wiki/Internationalized_domain_name)
 * [Punycode](https://en.wikipedia.org/wiki/Punycode)
 * [List of internationalized domain names](https://blogs.msdn.microsoft.com/shawnste/2006/09/14/idn-test-urls/)
+
+## Example of prevention 
+Take a look at "рaypal.com" (warning). It seems like a valid paypal-Domain. In fact it's not. The first character is not an ASCII p. IDN Safe prevents you from visiting this site by blocking it.
