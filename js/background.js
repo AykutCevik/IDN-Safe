@@ -34,10 +34,10 @@ chrome.webRequest.onBeforeRequest.addListener(function (data) {
             delete blockedDomainsByTabs[data.tabId];
         }
 
-        var block = (data.url.indexOf("xn--") !== -1);
+        var domain = extractDomainFromURL(data.url);
+        var block = (domain.indexOf("xn--") !== -1);
         if (block) {
 
-            var domain = extractDomainFromURL(data.url);
             if (allowedDomains.indexOf(domain) > -1) {
                 return {cancel: false};
             }
