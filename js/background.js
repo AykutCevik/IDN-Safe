@@ -42,8 +42,6 @@ chrome.webRequest.onBeforeRequest.addListener(function (data) {
                 return {cancel: false};
             }
 
-            console.log("Blocked " + data.url);
-
             var tabId = data.tabId;
 
             if (blockedTabs.indexOf(tabId) === -1) {
@@ -134,7 +132,7 @@ function extractDomainFromURL(url) { // credit: NotScript
 
 function loadWhitelist() {
     chrome.storage.local.get('whiteListedDomains', function (object) {
-        if (object.whiteListedDomains.length > 0) {
+        if (object.whiteListedDomains !== undefined && object.whiteListedDomains.length > 0) {
             object.whiteListedDomains.forEach(function (domain) {
                 allowedDomains.push(domain);
             });
