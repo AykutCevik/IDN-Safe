@@ -9,7 +9,7 @@ function init() {
     setChildTextNode('textWhitelistList', chrome.i18n.getMessage("textSettingsWhiteListDescription"));
     setChildTextNode('buttonRemoveFromWhitelist', chrome.i18n.getMessage("buttonRemoveFromWhitelist"));
     setChildTextNode('buttonRevokeAllTemp', chrome.i18n.getMessage("buttonRevokeAllTemporary"));
-    setChildTextNode('textVersionInfo', chrome.i18n.getMessage("extensionName") + ' ' + chrome.app.getDetails().version);
+    setChildTextNode('textVersionInfo', chrome.i18n.getMessage("extensionName") + ' ' + (chrome.app !== undefined ? chrome.app.getDetails().version : ''));
 
     document.getElementById('buttonRemoveFromWhitelist').onclick = removeFromWhitelist;
     document.getElementById('buttonRevokeAllTemp').onclick = revokeAllTemporarilyAllowed;
@@ -17,7 +17,7 @@ function init() {
 }
 
 function revokeAllTemporarilyAllowed() {
-    chrome.extension.sendRequest({type: REQ_REVOKE_FROM_TEMP_LIST}, function (response) {
+    chrome.runtime.sendMessage({type: REQ_REVOKE_FROM_TEMP_LIST}, function (response) {
         var data = {message: chrome.i18n.getMessage("textRevokedFromTemp")};
         document.getElementById('options-snackbar').MaterialSnackbar.showSnackbar(data);
     });
@@ -26,13 +26,19 @@ function revokeAllTemporarilyAllowed() {
 function removeFromWhitelist() {
     var domains = getSelectedDomains();
     if (domains.length > 0) {
-        chrome.extension.sendRequest({type: REQ_REMOVE_FROM_WHITELIST, list: domains}, function (response) {
+        chrome.runtime.sendMessage({type: REQ_REMOVE_FROM_WHITELIST, list: domains});
+    }
+}
+
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+    switch (request.type) {
+        case REQ_URLS_DEWHITELISTED:
             var data = {message: chrome.i18n.getMessage("textRemovedFromWhitelist")};
             document.getElementById('options-snackbar').MaterialSnackbar.showSnackbar(data);
             loadDomainList();
-        });
+            break;
     }
-}
+});
 
 function getSelectedDomains() {
     var checkedBoxes = document.querySelectorAll('input[data-domain]:checked');

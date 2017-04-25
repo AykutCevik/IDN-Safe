@@ -26,7 +26,7 @@ function reloadCurrentTab() {
 function allowSelectedTemporarily() {
     var domains = getSelectedDomains();
     if (domains.length > 0) {
-        chrome.extension.sendRequest({type: REQ_ALLOW_TEMPORARILY, list: domains}, function (response) {
+        chrome.runtime.sendMessage({type: REQ_ALLOW_TEMPORARILY, list: domains}, function (response) {
             reloadCurrentTab();
         });
     }
@@ -35,7 +35,7 @@ function allowSelectedTemporarily() {
 function allowSelectedAlways() {
     var domains = getSelectedDomains();
     if (domains.length > 0) {
-        chrome.extension.sendRequest({type: REQ_ALLOW_ALWAYS, list: domains}, function (response) {
+        chrome.runtime.sendMessage({type: REQ_ALLOW_ALWAYS, list: domains}, function (response) {
             reloadCurrentTab();
         });
     }
@@ -77,7 +77,7 @@ function getBlockUrls() {
     chrome.tabs.query({active: true, lastFocusedWindow: true}, function (tabArray) {
         var tabId = tabArray.length > 0 ? tabArray[0].id : -1;
         if (tabId !== -1) {
-            chrome.extension.sendRequest({type: REQ_BLOCKED_URLS, tabId: tabId}, function (response) {
+            chrome.runtime.sendMessage({type: REQ_BLOCKED_URLS, tabId: tabId}, function (response) {
                 displayBlockedDomains(response.list);
             });
         }

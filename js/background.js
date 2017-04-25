@@ -2,7 +2,7 @@ const blockedTabs = [];
 const blockedDomainsByTabs = [];
 const allowedDomains = [];
 
-chrome.extension.onRequest.addListener(function (request, sender, sendResponse) {
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
     switch (request.type) {
         case REQ_BLOCKED_URLS:
@@ -18,7 +18,7 @@ chrome.extension.onRequest.addListener(function (request, sender, sendResponse) 
             sendResponse(null);
             break;
         case REQ_REMOVE_FROM_WHITELIST:
-            deWhitelistDomains(request.list, sendResponse);
+            deWhitelistDomains(request.list);
             break;
         case REQ_REVOKE_FROM_TEMP_LIST:
             revokeTemporarilyAllowed();
@@ -29,20 +29,21 @@ chrome.extension.onRequest.addListener(function (request, sender, sendResponse) 
 
 chrome.webRequest.onBeforeRequest.addListener(function (data) {
 
+        var tabId = data.tabId;
+
         if (data.type === REQ_MAIN_FRAME) {
             delete blockedTabs[data.tabId];
             delete blockedDomainsByTabs[data.tabId];
+            updateTabIcon(tabId);
         }
 
-        var domain = extractDomainFromURL(data.url);
+        var domain = punycode.toASCII(extractDomainFromURL(data.url));
         var block = (domain.indexOf("xn--") !== -1);
         if (block) {
 
             if (allowedDomains.indexOf(domain) > -1) {
                 return {cancel: false};
             }
-
-            var tabId = data.tabId;
 
             if (blockedTabs.indexOf(tabId) === -1) {
                 blockedTabs[tabId] = 0;
@@ -68,11 +69,11 @@ function revokeTemporarilyAllowed() {
     loadWhitelist();
 }
 
-function deWhitelistDomains(domains, successHandler) {
+function deWhitelistDomains(domains) {
+
     chrome.storage.local.get('whiteListedDomains', function (object) {
 
         const whitelistedDomains = [];
-
         if (object.whiteListedDomains) {
             object.whiteListedDomains.forEach(function (domain) {
                 if (domains.indexOf(domain) === -1) {
@@ -85,7 +86,9 @@ function deWhitelistDomains(domains, successHandler) {
                 }
             });
         }
-        chrome.storage.local.set({whiteListedDomains: whitelistedDomains}, successHandler);
+        chrome.storage.local.set({whiteListedDomains: whitelistedDomains}, function () {
+            chrome.runtime.sendMessage({type: REQ_URLS_DEWHITELISTED});
+        });
     });
 }
 

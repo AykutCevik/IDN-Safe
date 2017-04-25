@@ -11,10 +11,10 @@
   "background": {
     "scripts": [
       "js/constants.js",
+      "js/punycode.js",
       "js/background.js"
     ]
   },
-
   "minimum_chrome_version": "50",
   "offline_enabled": false,
   "options_page": "html/options.html",
