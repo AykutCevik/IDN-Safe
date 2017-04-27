@@ -10,6 +10,7 @@ With IDN Safe you can temporarily allow domains or whitelist them at all. By def
 ## Get it
 
 * [Chrome Web Store](https://chrome.google.com/webstore/detail/idn-safe/kegeenojcnijgmfgkcokknkbpmjcabdm)
+* [Opera Add-ons](https://addons.opera.com/de/extensions/details/idn-safe/?display=en)
 
 ## More
 * [Internationalized domain name](https://en.wikipedia.org/wiki/Internationalized_domain_name)
