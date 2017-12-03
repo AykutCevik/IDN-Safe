@@ -2,7 +2,7 @@ const blockedTabs = [];
 const blockedDomainsByTabs = [];
 const allowedDomains = [];
 
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+browser.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
     switch (request.type) {
         case REQ_BLOCKED_URLS:
@@ -27,7 +27,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     }
 });
 
-chrome.webRequest.onBeforeRequest.addListener(function (data) {
+browser.webRequest.onBeforeRequest.addListener(function (data) {
 
         var tabId = data.tabId;
 
@@ -71,7 +71,7 @@ function revokeTemporarilyAllowed() {
 
 function deWhitelistDomains(domains) {
 
-    chrome.storage.local.get('whiteListedDomains', function (object) {
+    browser.storage.local.get('whiteListedDomains', function (object) {
 
         const whitelistedDomains = [];
         if (object.whiteListedDomains) {
@@ -86,14 +86,14 @@ function deWhitelistDomains(domains) {
                 }
             });
         }
-        chrome.storage.local.set({whiteListedDomains: whitelistedDomains}, function () {
-            chrome.runtime.sendMessage({type: REQ_URLS_DEWHITELISTED});
+        browser.storage.local.set({whiteListedDomains: whitelistedDomains}, function () {
+            browser.runtime.sendMessage({type: REQ_URLS_DEWHITELISTED});
         });
     });
 }
 
 function whitelistDomains(domains) {
-    chrome.storage.local.get('whiteListedDomains', function (object) {
+    browser.storage.local.get('whiteListedDomains', function (object) {
 
         const whitelistedDomains = [];
 
@@ -106,17 +106,17 @@ function whitelistDomains(domains) {
             whitelistedDomains.push(domain);
         });
 
-        chrome.storage.local.set({whiteListedDomains: whitelistedDomains});
+        browser.storage.local.set({whiteListedDomains: whitelistedDomains});
     });
 }
 
 function updateTabIcon(tabId) {
     if (blockedTabs[tabId]) {
-        chrome.browserAction.setIcon({tabId: tabId, path: "../img/icon_red_48.png"});
-        chrome.browserAction.setBadgeText({tabId: tabId, "text": "" + blockedTabs[tabId]});
+        browser.browserAction.setIcon({tabId: tabId, path: "../img/icon_red_48.png"});
+        browser.browserAction.setBadgeText({tabId: tabId, "text": "" + blockedTabs[tabId]});
     } else {
-        chrome.browserAction.setIcon({tabId: tabId, path: "../img/icon_48.png"});
-        chrome.browserAction.setBadgeText({tabId: tabId, "text": ""});
+        browser.browserAction.setIcon({tabId: tabId, path: "../img/icon_48.png"});
+        browser.browserAction.setBadgeText({tabId: tabId, "text": ""});
     }
 }
 
@@ -134,7 +134,7 @@ function extractDomainFromURL(url) { // credit: NotScript
 }
 
 function loadWhitelist() {
-    chrome.storage.local.get('whiteListedDomains', function (object) {
+    browser.storage.local.get('whiteListedDomains', function (object) {
         if (object.whiteListedDomains !== undefined && object.whiteListedDomains.length > 0) {
             object.whiteListedDomains.forEach(function (domain) {
                 allowedDomains.push(domain);
