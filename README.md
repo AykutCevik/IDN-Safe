@@ -11,6 +11,7 @@ With IDN Safe you can temporarily allow domains or whitelist them at all. By def
 
 * [Chrome Web Store](https://chrome.google.com/webstore/detail/idn-safe/kegeenojcnijgmfgkcokknkbpmjcabdm)
 * [Opera Add-ons](https://addons.opera.com/de/extensions/details/idn-safe/)
+* [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/idn-safe/)
 
 ## More
 * [Internationalized domain name](https://en.wikipedia.org/wiki/Internationalized_domain_name)
