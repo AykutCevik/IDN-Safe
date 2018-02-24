@@ -1,15 +1,17 @@
+var browser = browser || chrome;
+
 function setChildTextNode(elementId, text) {
     document.getElementById(elementId).innerText = text;
 }
 
 function init() {
-    document.title = chrome.i18n.getMessage("extensionName") + ' - ' + chrome.i18n.getMessage("textSettingsTitle");
-    setChildTextNode('textSettingsTitle', chrome.i18n.getMessage("textSettingsTitle"));
-    setChildTextNode('textTitleWhitelist', chrome.i18n.getMessage("textSettingsWhiteListTitle"));
-    setChildTextNode('textWhitelistList', chrome.i18n.getMessage("textSettingsWhiteListDescription"));
-    setChildTextNode('buttonRemoveFromWhitelist', chrome.i18n.getMessage("buttonRemoveFromWhitelist"));
-    setChildTextNode('buttonRevokeAllTemp', chrome.i18n.getMessage("buttonRevokeAllTemporary"));
-    setChildTextNode('textVersionInfo', chrome.i18n.getMessage("extensionName") + ' ' + (chrome.app !== undefined ? chrome.app.getDetails().version : ''));
+    document.title = browser.i18n.getMessage("extensionName") + ' - ' + browser.i18n.getMessage("textSettingsTitle");
+    setChildTextNode('textSettingsTitle', browser.i18n.getMessage("textSettingsTitle"));
+    setChildTextNode('textTitleWhitelist', browser.i18n.getMessage("textSettingsWhiteListTitle"));
+    setChildTextNode('textWhitelistList', browser.i18n.getMessage("textSettingsWhiteListDescription"));
+    setChildTextNode('buttonRemoveFromWhitelist', browser.i18n.getMessage("buttonRemoveFromWhitelist"));
+    setChildTextNode('buttonRevokeAllTemp', browser.i18n.getMessage("buttonRevokeAllTemporary"));
+    setChildTextNode('textVersionInfo', browser.i18n.getMessage("extensionName") + ' ' + (browser.app !== undefined ? browser.app.getDetails().version : ''));
 
     document.getElementById('buttonRemoveFromWhitelist').onclick = removeFromWhitelist;
     document.getElementById('buttonRevokeAllTemp').onclick = revokeAllTemporarilyAllowed;
@@ -17,8 +19,8 @@ function init() {
 }
 
 function revokeAllTemporarilyAllowed() {
-    chrome.runtime.sendMessage({type: REQ_REVOKE_FROM_TEMP_LIST}, function (response) {
-        var data = {message: chrome.i18n.getMessage("textRevokedFromTemp")};
+    browser.runtime.sendMessage({type: REQ_REVOKE_FROM_TEMP_LIST}, function (response) {
+        var data = {message: browser.i18n.getMessage("textRevokedFromTemp")};
         document.getElementById('options-snackbar').MaterialSnackbar.showSnackbar(data);
     });
 }
@@ -26,14 +28,14 @@ function revokeAllTemporarilyAllowed() {
 function removeFromWhitelist() {
     var domains = getSelectedDomains();
     if (domains.length > 0) {
-        chrome.runtime.sendMessage({type: REQ_REMOVE_FROM_WHITELIST, list: domains});
+        browser.runtime.sendMessage({type: REQ_REMOVE_FROM_WHITELIST, list: domains});
     }
 }
 
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+browser.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     switch (request.type) {
         case REQ_URLS_DEWHITELISTED:
-            var data = {message: chrome.i18n.getMessage("textRemovedFromWhitelist")};
+            var data = {message: browser.i18n.getMessage("textRemovedFromWhitelist")};
             document.getElementById('options-snackbar').MaterialSnackbar.showSnackbar(data);
             loadDomainList();
             break;
@@ -52,7 +54,7 @@ function getSelectedDomains() {
 }
 
 function loadDomainList() {
-    chrome.storage.local.get('whiteListedDomains', function (object) {
+    browser.storage.local.get('whiteListedDomains', function (object) {
         var domains = object.whiteListedDomains;
         displayWhitelistedDomains(domains);
     });
@@ -64,7 +66,7 @@ function displayWhitelistedDomains(domains) {
     document.getElementById('no_whitelisted_domains').innerText = '';
 
     if (!domains || domains.length === 0) {
-        setChildTextNode('no_whitelisted_domains', chrome.i18n.getMessage("textNoWhitelistedDomains"));
+        setChildTextNode('no_whitelisted_domains', browser.i18n.getMessage("textNoWhitelistedDomains"));
     } else {
         var container = document.getElementById('whitelist_list');
         var htmlTmpl = document.getElementById('template_list_item').innerHTML;

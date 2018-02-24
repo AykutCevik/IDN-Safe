@@ -1,3 +1,5 @@
+var browser = browser || chrome;
+
 function setChildTextNode(elementId, text) {
     document.getElementById(elementId).innerText = text;
 }
@@ -14,10 +16,10 @@ function getSelectedDomains() {
 }
 
 function reloadCurrentTab() {
-    chrome.tabs.query({active: true, lastFocusedWindow: true}, function (tabArray) {
+    browser.tabs.query({active: true, lastFocusedWindow: true}, function (tabArray) {
         var tabId = tabArray.length > 0 ? tabArray[0].id : -1;
         if (tabId !== -1) {
-            chrome.tabs.reload(tabId);
+            browser.tabs.reload(tabId);
         }
     });
     window.close();
@@ -26,7 +28,7 @@ function reloadCurrentTab() {
 function allowSelectedTemporarily() {
     var domains = getSelectedDomains();
     if (domains.length > 0) {
-        chrome.runtime.sendMessage({type: REQ_ALLOW_TEMPORARILY, list: domains}, function (response) {
+        browser.runtime.sendMessage({type: REQ_ALLOW_TEMPORARILY, list: domains}, function (response) {
             reloadCurrentTab();
         });
     }
@@ -35,17 +37,17 @@ function allowSelectedTemporarily() {
 function allowSelectedAlways() {
     var domains = getSelectedDomains();
     if (domains.length > 0) {
-        chrome.runtime.sendMessage({type: REQ_ALLOW_ALWAYS, list: domains}, function (response) {
+        browser.runtime.sendMessage({type: REQ_ALLOW_ALWAYS, list: domains}, function (response) {
             reloadCurrentTab();
         });
     }
 }
 
 function initUI() {
-    setChildTextNode('popupTitle', chrome.i18n.getMessage("extensionName"));
-    setChildTextNode('popup_desc', chrome.i18n.getMessage("textPopupDescription"));
-    setChildTextNode('btn_allow_temp', chrome.i18n.getMessage("buttonAllowTemp"));
-    setChildTextNode('btn_allow_always', chrome.i18n.getMessage("buttonAllowAlways"));
+    setChildTextNode('popupTitle', browser.i18n.getMessage("extensionName"));
+    setChildTextNode('popup_desc', browser.i18n.getMessage("textPopupDescription"));
+    setChildTextNode('btn_allow_temp', browser.i18n.getMessage("buttonAllowTemp"));
+    setChildTextNode('btn_allow_always', browser.i18n.getMessage("buttonAllowAlways"));
 
     document.getElementById('btn_allow_temp').onclick = allowSelectedTemporarily;
     document.getElementById('btn_allow_always').onclick = allowSelectedAlways;
@@ -55,7 +57,7 @@ function displayBlockedDomains(urls) {
     if (!urls || urls.length === 0) {
 
         var htmlTmpl = document.getElementById('template_no_items').innerHTML;
-        htmlTmpl = htmlTmpl.replace('__MSG__', chrome.i18n.getMessage("textNoBlockedDomains"));
+        htmlTmpl = htmlTmpl.replace('__MSG__', browser.i18n.getMessage("textNoBlockedDomains"));
         document.getElementById('block_list_container').innerHTML = htmlTmpl;
         document.getElementById('btn_allow_temp').className += ' mdl-button--disabled';
         document.getElementById('btn_allow_always').className += ' mdl-button--disabled';
@@ -74,10 +76,10 @@ function displayBlockedDomains(urls) {
 
 
 function getBlockUrls() {
-    chrome.tabs.query({active: true, lastFocusedWindow: true}, function (tabArray) {
+    browser.tabs.query({active: true, lastFocusedWindow: true}, function (tabArray) {
         var tabId = tabArray.length > 0 ? tabArray[0].id : -1;
         if (tabId !== -1) {
-            chrome.runtime.sendMessage({type: REQ_BLOCKED_URLS, tabId: tabId}, function (response) {
+            browser.runtime.sendMessage({type: REQ_BLOCKED_URLS, tabId: tabId}, function (response) {
                 displayBlockedDomains(response.list);
             });
         }
