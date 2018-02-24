@@ -1,3 +1,5 @@
+var browser = browser || chrome;
+
 function setChildTextNode(elementId, text) {
     document.getElementById(elementId).innerText = text;
 }

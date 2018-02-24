@@ -1,6 +1,7 @@
 const blockedTabs = [];
 const blockedDomainsByTabs = [];
 const allowedDomains = [];
+var browser = browser || chrome;
 
 browser.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
