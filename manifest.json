@@ -29,5 +29,10 @@
 
     "default_popup": "html/popup.html"
   },
-  "author": "Aykut Çevik"
+  "author": "Aykut Çevik",
+  "applications": {
+    "gecko": {
+      "id": "idnsafe@aykutcevik.com"
+    }
+  }
 }
