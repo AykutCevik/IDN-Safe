@@ -113,11 +113,27 @@ function whitelistDomains(domains) {
 
 function updateTabIcon(tabId) {
     if (blockedTabs[tabId]) {
-        browser.browserAction.setIcon({tabId: tabId, path: "../img/icon_red_48.png"});
-        browser.browserAction.setBadgeText({tabId: tabId, "text": "" + blockedTabs[tabId]});
+        if (browser.browserAction.setIcon !== undefined) {
+            browser.browserAction.setIcon({tabId: tabId, path: "../img/icon_red_48.png"});
+            browser.browserAction.setBadgeText({tabId: tabId, "text": "" + blockedTabs[tabId]});
+        }
+        if (browser.browserAction.setTitle !== undefined ) {
+            browser.browserAction.setTitle({
+                tabId: tabId,
+                title: browser.runtime.getManifest().name + " (BLOCKED)"
+            });
+        }
     } else {
-        browser.browserAction.setIcon({tabId: tabId, path: "../img/icon_48.png"});
-        browser.browserAction.setBadgeText({tabId: tabId, "text": ""});
+        if (browser.browserAction.setIcon !== undefined) {
+            browser.browserAction.setIcon({tabId: tabId, path: "../img/icon_48.png"});
+            browser.browserAction.setBadgeText({tabId: tabId, "text": ""});
+        }
+        if (browser.browserAction.setTitle !== undefined ) {
+            browser.browserAction.setTitle({
+                tabId: tabId,
+                title: browser.runtime.getManifest().name
+            });
+        }
     }
 }
 
