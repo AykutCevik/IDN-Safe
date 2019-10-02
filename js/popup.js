@@ -66,7 +66,7 @@ function displayBlockedDomains(urls) {
         var htmlTmpl = document.getElementById('template_list_item').innerHTML;
         urls.forEach(function (domain) {
             var punycodeDomain = punycode.toUnicode(domain);
-            punycodeDomain = punycodeDomain.replace(/([^a-zA-Z0-9\-\.]+)/g, '<font color="red">$1</font>');
+            punycodeDomain = punycodeDomain.replace(/([^a-zA-Z0-9\-\.]+)/g, '<span style="color: red; ">$1</span>');
             var itemHtml = htmlTmpl.replace(/__DOMAIN_TEXT__/g, punycodeDomain);
             var itemHtml = itemHtml.replace(/__DOMAIN__/g, domain);
             var itemHtml = itemHtml.replace(/__LIST_ID__/g, hash(domain));
